@@ -1,7 +1,5 @@
 #include "ode_integrators.h"
 
-#define MAX_NVARS 256
-
 void RK4_step(const double t, double *y, double *dydt, Rhs_f rhs_f,
               const double dt, const int nVars) {
   double *yTemp = new double[nVars]; // this one gets reused

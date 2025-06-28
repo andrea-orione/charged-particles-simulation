@@ -1,0 +1,99 @@
+\documentclass[a4paper, 12pt, twoside, titlepage]{article}
+
+\usepackage[utf8]{inputenc}          % Encoding
+\usepackage[T1]{fontenc}
+
+% Subfiles manager
+\usepackage{subfiles}
+
+\usepackage[english]{babel} % Language hyphenation and typographical rules
+
+% Aspect and layout
+\usepackage[a4paper,top=2.5cm,bottom=2cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage{multicol}
+\usepackage[hidelinks]{hyperref}
+\usepackage[title]{appendix}
+
+% Headers and footers
+\usepackage{fancyhdr}
+\usepackage[hang,flushmargin]{footmisc}         % footnotes
+\renewcommand{\sectionmark}[1]{\markboth{}{\emph{\normalfont\thesection. ~#1}}}
+\renewcommand{\subsectionmark}[1]{}             % Remove \subsection from header
+\pagestyle{fancy}                               % All pages have headers and footers
+\fancyhead{}                                    % Blank out the default header
+\fancyfoot{}                                    % Blank out the default footer
+\fancyhead[L]{\rightmark}                       % Custom header text
+\fancyhead[R]{Gruppo A-12}                        % Custom header text
+\fancyfoot[RO,LE]{\thepage}                     % Custom footer text
+% \pagestyle{fancy}
+% \fancyhf{}
+% \fancyhead[LE]{Liceo Scientifico Statale "G. Ferraris"}
+% \fancyhead[RO]{Interpretazione di Einstein dell'effetto fotoelettrico}
+% \fancyfoot[LE,RO]{Andrea Orione}
+% \fancyfoot[RE,LO]{\thepage}
+
+% Customized lists
+\usepackage[shortlabels]{enumitem}
+\setitemize{noitemsep, topsep=2pt, parsep=2pt, partopsep=2pt}
+
+% Math
+\usepackage{amsmath, esint, amsfonts, bm, amssymb, mathrsfs, mathtools, mathrsfs}
+\usepackage{braket}
+% Physics
+\usepackage{physics}                    % Everything you'll ever need
+\usepackage[per-mode=symbol,separate-uncertainty=true]{siunitx}
+% tables
+\usepackage{hhline}                     % tabls gave problems
+\usepackage{verbatim, listings, multirow} % ?
+% images
+\usepackage{tikz}                       %Illustrazioni
+\usepackage{graphicx}
+\graphicspath{ {img/} }
+\usepackage{wrapfig}
+\usepackage[labelfont=bf,justification=centering,small,up,textfont=it,up]{caption}
+\usepackage{subcaption, float}
+
+
+\title{Particles in electromagnetic fields}
+\author{Andrea Orione}
+\date{Accademic Year 2024/2025}
+
+\begin{document}
+    \begin{titlepage}
+        \begin{center}
+            \vspace*{1cm}
+
+            \Huge
+            \textbf{Interpretazione di Einstein\\dell'effetto fotoelettrico}
+
+                % \vspace{0.5cm}
+                % Thesis Subtitle
+
+            \vspace{1.5cm}
+            \LARGE
+            \textbf{Andrea Orione}
+
+            \vfill
+            \Large
+            Elaborato per l'esame di Stato 2021
+
+            \vspace{0.8cm}
+
+            \includegraphics[scale=0.1]{Liceo_Galileo_Ferraris_logo}
+
+            \vspace{0.8cm}
+            Liceo Scientifico Statale "G. Ferraris"\\
+            Torino, 31 maggio 2021
+
+        \end{center}
+    \end{titlepage}
+
+
+\newpage
+
+
+\section{Introduzione}
+Ciao
+
+
+\end{document}
