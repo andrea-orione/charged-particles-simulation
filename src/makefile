@@ -1,5 +1,5 @@
 CXX = g++
-CFLAGS = -c
+CFLAGS = -c -Wall -ansi -pedantic
 LIB_PATH = ../lib
 VPATH = ./:$(LIB_PATH)
 INCLUDE_DIRS = -I. -I$(LIB_PATH)
