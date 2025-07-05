@@ -1,4 +1,5 @@
-#include "ode_integrators.h"
+#include "integrators.h"
+#include <cmath>
 #include <cstring>
 
 void RK4_step(const double t, double *y, double *dydt, Rhs_f rhs_f,
@@ -29,33 +30,6 @@ void RK4_step(const double t, double *y, double *dydt, Rhs_f rhs_f,
   delete[] k1;
   delete[] k2;
   delete[] k3;
-}
-
-int adaptive_RK4_step(const double t, double *y, Rhs_f rhs_f,
-                      const double dt_init, const double precis,
-                      const int max_iter, const int nVars, double *y_out) {
-  int iter = 1;
-  double *dydt_init = new double[nVars];
-  double *y_next = new double[nVars];
-  double *y_next_bet = new double[nVars];
-  rhs_f(t, y, dydt_init);
-  double dt = dt_init;
-
-  RK4_step(t, y, dydt_init, rhs_f, dt, nVars, y_next_bet);
-
-  double err = precis + 1.;
-  while (err > precis && iter < max_iter) {
-    memcpy(y_next, y_next_bet, nVars);
-
-    iter++;
-  }
-
-  memcpy(y_out, y_next_bet, nVars);
-  delete[] dydt_init;
-  delete[] y_next;
-  delete[] y_next_bet;
-
-  return iter;
 }
 
 void boris_step(Vec3 *x, Vec3 *v, double q, Vec3Field E, Vec3Field B, double dt,
