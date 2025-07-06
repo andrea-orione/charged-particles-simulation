@@ -1,1 +1,28 @@
-[]
+[
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-Wall",
+      "-pedantic",
+      "-I.",
+      "-I../lib",
+      "convergence_study.cpp"
+    ],
+    "directory": "/home/andrea/Appunti/Algoritmi numerici per la fisica/charged-particles-simulation/src",
+    "file": "/home/andrea/Appunti/Algoritmi numerici per la fisica/charged-particles-simulation/src/convergence_study.cpp"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-Wall",
+      "-pedantic",
+      "-I.",
+      "-I../lib",
+      "../lib/integrators.cpp"
+    ],
+    "directory": "/home/andrea/Appunti/Algoritmi numerici per la fisica/charged-particles-simulation/src",
+    "file": "/home/andrea/Appunti/Algoritmi numerici per la fisica/charged-particles-simulation/lib/integrators.cpp"
+  }
+]
