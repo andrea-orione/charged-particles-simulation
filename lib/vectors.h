@@ -1,6 +1,8 @@
 #ifndef VECTORS
 #define VECTORS
 
+#include <cmath>
+
 /**
  * A 3D Vector.
  * Contains the x, y, z components as doubles.
@@ -60,6 +62,20 @@ inline Vec3 cross(Vec3 v, Vec3 w) {
       v.x * w.y - v.y * w.x,
   };
 }
+
+/**
+ * Calculates the squared modulus of the vector
+ * @param v The vector.
+ * @return The squared modulo.
+ */
+inline double squared_mod(Vec3 v) { return dot(v, v); }
+
+/**
+ * Calculates the modulus of the vector
+ * @param v The vector.
+ * @return The modulo.
+ */
+inline double modulo(Vec3 v) { return sqrt(squared_mod(v)); }
 
 /**
  * A 3-dimentional vector field not depending on the position of the particles.

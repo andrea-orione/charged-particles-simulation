@@ -1,51 +1,73 @@
 #include "integrators.h"
-#include <cmath>
-#include <cstring>
+#include "vectors.h"
 
-void RK4_step(const double t, double *y, double *dydt, Rhs_f rhs_f,
-              const double dt, const int nVars, double *y_out) {
-  double *yTemp = new double[nVars]; // this one gets reused
-  double *k1 = new double[nVars];
-  double *k2 = new double[nVars];
-  double *k3 = new double[nVars];
+void RK4_step(const double t, const Vec3 *const x, const Vec3 *const v,
+              const double *const q, const double *const m, Vec3Field E,
+              Vec3Field B, const double dt, const int n_part, Vec3 *const x_out,
+              Vec3 *const v_out) {
+  Vec3 x_tem, v_tem; // these ones gets reused
+  Vec3 kx, kv;       // these one gets reused
+  Vec3 kx_tot, kv_tot;
 
-  rhs_f(t, y, dydt);
-  int i;
-  for (i = 0; i < nVars; i++)
-    yTemp[i] = y[i] + 0.5 * dt * dydt[i];
+  double qm;
+  double dt_2 = dt * 0.5;
+  double dt_6 = dt / 6.;
+  for (int i = 0; i < n_part; i++) {
+    qm = q[i] / m[i];
 
-  rhs_f(t + 0.5 * dt, yTemp, k1);
-  for (i = 0; i < nVars; i++)
-    yTemp[i] = y[i] + 0.5 * dt * k1[i];
+    // K_1
+    kx_tot = v[i];
+    kv_tot = scale(sum(E(x[i], t), cross(v[i], B(x[i], t))), qm);
 
-  rhs_f(t + 0.5 * dt, yTemp, k2);
-  for (i = 0; i < nVars; i++)
-    yTemp[i] = y[i] + dt * k2[i];
+    // K_2
+    x_tem = sum(x[i], scale(kx_tot, dt_2));
+    v_tem = sum(v[i], scale(kv_tot, dt_2));
 
-  rhs_f(t + dt, yTemp, k3);
-  for (i = 0; i < nVars; i++)
-    y_out[i] = y[i] + dt * (dydt[i] + k3[i] + 2. * (k1[i] + k2[i])) / 6.;
+    kx = v_tem;
+    kv = scale(sum(E(x_tem, t + dt_2), cross(v_tem, B(x_tem, t + dt_2))), qm);
 
-  delete[] yTemp;
-  delete[] k1;
-  delete[] k2;
-  delete[] k3;
+    kx_tot = sum(kx_tot, scale(kx, 2));
+    kv_tot = sum(kv_tot, scale(kv, 2));
+
+    // K_3
+    x_tem = sum(x[i], scale(kx, dt_2));
+    v_tem = sum(v[i], scale(kv, dt_2));
+
+    kx = v_tem;
+    kv = scale(sum(E(x_tem, t + dt_2), cross(v_tem, B(x_tem, t + dt_2))), qm);
+
+    kx_tot = sum(kx_tot, scale(kx, 2));
+    kv_tot = sum(kv_tot, scale(kv, 2));
+
+    // K_4
+    x_tem = sum(x[i], scale(kx, dt));
+    v_tem = sum(v[i], scale(kv, dt));
+
+    kx = v_tem;
+    kv = scale(sum(E(x_tem, t + dt), cross(v_tem, B(x_tem, t + dt))), qm);
+
+    kx_tot = sum(kx_tot, kx);
+    kv_tot = sum(kv_tot, kv);
+
+    x_out[i] = sum(x[i], scale(kx_tot, dt_6));
+    v_out[i] = sum(v[i], scale(kv_tot, dt_6));
+  }
 }
 
-void boris_step(Vec3 *x, Vec3 *v, double q, Vec3Field E, Vec3Field B, double dt,
-                int nParticles, Vec3 *x_out, Vec3 *y_out) {
+void boris_step(const double t, const Vec3 *const x, const Vec3 *const v,
+                const double *const q, const double *const m, Vec3Field E,
+                Vec3Field B, const double dt, const int n_part,
+                Vec3 *const x_out, Vec3 *const v_out) {
+  for (int i = 0; i < n_part; i++) {
+    double qp = dt * q[i] / (2 * m[i]);
+    Vec3 h = scale(B(x[i], t), qp);
+    Vec3 qE = scale(E(x[i], t), qp);
+    double h_mod2 = squared_mod(h);
+    Vec3 s = scale(h, 2 / (1 + h_mod2));
+    Vec3 u = sum(v[i], qE);
+    Vec3 up = sum(u, cross(sum(u, cross(u, h)), s));
 
-  Vec3 *acc = new Vec3[nParticles];
-
-  int i;
-  for (i = 0; i < nVars; i++)
-    x[i] += 0.5 * dt * v[i];
-
-  accFunc(x, acc, nVars);
-  for (i = 0; i < nVars; i++)
-    v[i] = v[i] + dt * acc[i];
-
-  for (i = 0; i < nVars; i++)
-    x[i] += +0.5 * dt * v[i];
-}
+    v_out[i] = sum(up, qE);
+    x_out[i] = sum(x[i], scale(v_out[i], dt));
+  }
 }

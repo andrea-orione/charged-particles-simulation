@@ -30,17 +30,18 @@ typedef void (*Rhs_f)(double, double *, double *);
  * @param x The position of the particles at time t.
  * @param v The velocity of the particles.
  * @param q The charge of the particles.
+ * @param m The mass of the particles.
  * @param E The electric field of the system.
  * @param B The acceleration of the system.
  * @param dt The step of the increment.
  * @param n_part The number of particles in the system
  * @param x_out [out] An array where the next positions will be saved.
  * It does not need to be distinct from y.
- * @param x_out [out] An array where the next positions will be saved.
+ * @param v_out [out] An array where the next positions will be saved.
  * It does not need to be distinct from y.
  */
-void RK4_step(double t, Vec3 *x, Vec3 *v, double *q, Vec3Field E, Vec3Field B,
-              double dt, int nParticles, Vec3 *x_out, Vec3 *y_out);
+void RK4_step(double t, Vec3 *x, Vec3 *v, double *q, double *m, Vec3Field E,
+              Vec3Field B, double dt, int n_part, Vec3 *x_out, Vec3 *v_out);
 
 /**
  * Calculates the state of a system of particles in an electro-magnetic field
@@ -63,16 +64,17 @@ void RK4_step(double t, Vec3 *x, Vec3 *v, double *q, Vec3Field E, Vec3Field B,
  * @param x The position of the particles at time t.
  * @param v The velocity of the particles.
  * @param q The charge of the particles.
+ * @param m The mass of the particles.
  * @param E The electric field of the system.
  * @param B The acceleration of the system.
  * @param dt The step of the increment.
  * @param n_part The number of particles in the system
  * @param x_out [out] An array where the next positions will be saved.
  * It does not need to be distinct from y.
- * @param x_out [out] An array where the next positions will be saved.
+ * @param v_out [out] An array where the next velocities will be saved.
  * It does not need to be distinct from y.
  */
-void boris_step(double t, Vec3 *x, Vec3 *v, double *q, Vec3Field E, Vec3Field B,
-                double dt, int nParticles, Vec3 *x_out, Vec3 *y_out);
+void boris_step(double t, Vec3 *x, Vec3 *v, double *q, double *m, Vec3Field E,
+                Vec3Field B, double dt, int n_part, Vec3 *x_out, Vec3 *v_out);
 
 #endif
