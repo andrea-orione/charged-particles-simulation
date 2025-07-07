@@ -1,8 +1,8 @@
 #include "integrators.h"
 #include "vectors.h"
 
-void RK4_step(const double t, const Vec3 *const x, const Vec3 *const v,
-              const double *const q, const double *const m, Vec3Field E,
+void RK4_step(const double t, Vec3 *const x, Vec3 *const v,
+              double *const q, double *const m, Vec3Field E,
               Vec3Field B, const double dt, const int n_part, Vec3 *const x_out,
               Vec3 *const v_out) {
   Vec3 x_tem, v_tem; // these ones gets reused
@@ -54,8 +54,8 @@ void RK4_step(const double t, const Vec3 *const x, const Vec3 *const v,
   }
 }
 
-void boris_step(const double t, const Vec3 *const x, const Vec3 *const v,
-                const double *const q, const double *const m, Vec3Field E,
+void boris_step(const double t, Vec3 *const x, Vec3 *const v,
+                double *const q, double *const m, Vec3Field E,
                 Vec3Field B, const double dt, const int n_part,
                 Vec3 *const x_out, Vec3 *const v_out) {
   for (int i = 0; i < n_part; i++) {
