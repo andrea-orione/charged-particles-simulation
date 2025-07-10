@@ -1,4 +1,3 @@
-#define STAMP 0
 #include "integrators.h"
 #include "vectors.h"
 
@@ -6,6 +5,14 @@
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+
+#define STAMP 0
+
+#define DRIFT 1
+#define X_POINT 2
+#define TOR 3
+
+#define TEST X_POINT
 
 Vec3 E(Vec3 x, double t);
 Vec3 B(Vec3 x, double t);
@@ -58,15 +65,21 @@ int main(int argc, char *argv[]) {
   return 0;
 }
 
-// Vec3 E(Vec3 x, double t) { return Vec3{0., 0.5, 0.}; }
-//
-// Vec3 B(Vec3 x, double t) { return Vec3{0., 0., 1.}; }
+#if TEST == DRIFT
+Vec3 B(Vec3 x, double t) { return Vec3{0., 0., 1.}; }
+Vec3 E(Vec3 x, double t) { return Vec3{0., 0.5, 0.}; }
+#endif
 
-Vec3 B(Vec3 x, double t) { return Vec3{0., 0., sqrt(x.x * x.x + x.y * x.y)};
-}
+#if TEST == X_POINT
+Vec3 E(Vec3 x, double t) { return Vec3{0., 0., 0.5}; }
+Vec3 B(Vec3 x, double t) { return Vec3{1.e-3 * x.x, 1.e-3 * x.y, 0.}; }
+#endif
 
+#if TEST == TOR
 Vec3 E(Vec3 x, double t) {
   double d = sqrt(x.x * x.x + x.y * x.y);
   d = 1.e-2 / (d * d * d);
   return Vec3{-x.x * d, -x.y * d, 0.};
 }
+Vec3 B(Vec3 x, double t) { return Vec3{0., 0., sqrt(x.x * x.x + x.y * x.y)}; }
+#endif
