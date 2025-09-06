@@ -1,4 +1,5 @@
 #include "integrators.h"
+#include "utils.h"
 #include "vectors.h"
 
 #include <cmath>
@@ -6,13 +7,12 @@
 #include <iomanip>
 #include <iostream>
 
-#define STAMP 0
+#define STAMP 1
 
-#define DRIFT 1
 #define X_POINT 2
 #define TOR 3
 
-#define TEST X_POINT
+#define TEST TOR
 
 Vec3 E(Vec3 x, double t);
 Vec3 B(Vec3 x, double t);
@@ -32,12 +32,11 @@ int main(int argc, char *argv[]) {
   int numpoints = 10000;
   double dt = 0.03;
   double t = 0.;
+
 #if STAMP
-  std::cout << t << " " << std::setw(15) << xrk[0].x << " " << std::setw(15)
-            << xrk[0].y << " " << std::setw(15) << xrk[0].z << " "
-            << std::setw(15) << xbo[0].x << " " << std::setw(15) << xbo[0].y
-            << " " << std::setw(15) << xrk[0].z << std::endl;
+  log_advancement(-1, numpoints);
 #endif
+
   solution << t << " " << std::setw(15) << xrk[0].x << " " << std::setw(15)
            << xrk[0].y << " " << std::setw(15) << xrk[0].z << " "
            << std::setw(15) << xbo[0].x << " " << std::setw(15) << xbo[0].y
@@ -48,12 +47,11 @@ int main(int argc, char *argv[]) {
     boris_step(t, xbo, vbo, q, m, E, B, dt, 1, xbo, vbo);
 
     t += dt;
+
 #if STAMP
-    std::cout << t << " " << std::setw(15) << xrk[0].x << " " << std::setw(15)
-              << xrk[0].y << " " << std::setw(15) << xrk[0].z << " "
-              << std::setw(15) << xbo[0].x << " " << std::setw(15) << xbo[0].y
-              << " " << std::setw(15) << xrk[0].z << std::endl;
+    log_advancement(i, numpoints);
 #endif
+
     solution << t << " " << std::setw(15) << xrk[0].x << " " << std::setw(15)
              << xrk[0].y << " " << std::setw(15) << xrk[0].z << " "
              << std::setw(15) << xbo[0].x << " " << std::setw(15) << xbo[0].y
@@ -64,11 +62,6 @@ int main(int argc, char *argv[]) {
 
   return 0;
 }
-
-#if TEST == DRIFT
-Vec3 B(Vec3 x, double t) { return Vec3{0., 0., 1.}; }
-Vec3 E(Vec3 x, double t) { return Vec3{0., 0.5, 0.}; }
-#endif
 
 #if TEST == X_POINT
 Vec3 E(Vec3 x, double t) { return Vec3{0., 0., 0.5}; }

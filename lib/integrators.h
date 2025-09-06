@@ -4,16 +4,6 @@
 #include "vectors.h"
 
 /**
- * The right hand side of a differential equation of the form
- * dy/dt = rhs(y,t)
- * It should have a prodotype rhs_f(double t, double *y, double *result) where
- *  - t is the time of evaluation
- *  - y is the solution at time t
- *  - result is an array where the right hand side will be stored
- */
-typedef void (*Rhs_f)(double, double *, double *);
-
-/**
  * Calculate the solution of a system of particles in an electro-magnetic field
  * after a time-step using Runge-Kutta simpson of order 4 method.
  *
