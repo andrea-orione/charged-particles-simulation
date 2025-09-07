@@ -41,7 +41,7 @@ constexpr double STEP_SIZE = 0.03e-10;
  */
 #define SCALE LAB
 
-constexpr int N_PART = 1;
+constexpr int N_PART = 4;
 void initialize_starting_state(Vec3 *start_pos, Vec3 *start_vel,
                                double *charges, double *masses);
 Vec3 E(Vec3 x, double t);

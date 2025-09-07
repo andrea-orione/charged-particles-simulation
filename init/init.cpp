@@ -6,10 +6,12 @@
 // WARN: Always write in simulation units
 void initialize_starting_state(Vec3 *start_pos, Vec3 *start_vel,
                                double *charges, double *masses) {
-  start_pos[0] = space_to_sim_units(Vec3{30., 0., 0.});
-  start_vel[0] = speed_to_sim_units(Vec3{0., LIGHT_SPEED, 0.});
-  charges[0] = charge_to_sim_units(ELECTRON_CHARGE);
-  masses[0] = mass_to_sim_units(ELECTRON_MASS);
+  for (int i=0; i< N_PART; i++) {
+  start_pos[i] = space_to_sim_units(Vec3{30.-i, 0., 0.});
+  start_vel[i] = speed_to_sim_units(Vec3{0., LIGHT_SPEED, 0.});
+  charges[i] = charge_to_sim_units(ELECTRON_CHARGE);
+  masses[i] = mass_to_sim_units(ELECTRON_MASS);
+  }
 }
 
 Vec3 E(Vec3 x, double t) {
